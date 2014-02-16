@@ -18,6 +18,59 @@ function testMap() {
   }
 }
 
+function testStringPrototypeContains() {
+  try {
+    assertEq("abc".contains("a"), true, "String.prototype.contains");
+    assertEq("abc".contains("b"), true, "String.prototype.contains");
+    assertEq("abc".contains("abc"), true, "String.prototype.contains");
+    assertEq("abc".contains("bc"), true, "String.prototype.contains");
+    assertEq("abc".contains("d"), false, "String.prototype.contains");
+    assertEq("abc".contains("abcd"), false, "String.prototype.contains");
+    assertEq("abc".contains("ac"), false, "String.prototype.contains");
+    assertEq("abc".contains("abc", 0), true, "String.prototype.contains");
+    assertEq("abc".contains("bc", 0), true, "String.prototype.contains");
+    assertEq("abc".contains("de", 0), false, "String.prototype.contains");
+    assertEq("abc".contains("bc", 1), true, "String.prototype.contains");
+    assertEq("abc".contains("c", 1), true, "String.prototype.contains");
+    assertEq("abc".contains("a", 1), false, "String.prototype.contains");
+    assertEq("abc".contains("abc", 1), false, "String.prototype.contains");
+    assertEq("abc".contains("c", 2), true, "String.prototype.contains");
+    assertEq("abc".contains("d", 2), false, "String.prototype.contains");
+    assertEq("abc".contains("dcd", 2), false, "String.prototype.contains");
+    assertEq("abc".contains("a", 42), false, "String.prototype.contains");
+    assertEq("abc".contains("a", Infinity), false, "String.prototype.contains");
+    assertEq("abc".contains("ab", -43), true, "String.prototype.contains");
+    assertEq("abc".contains("cd", -42), false, "String.prototype.contains");
+    assertEq("abc".contains("ab", -Infinity), true, "String.prototype.contains");
+    assertEq("abc".contains("cd", -Infinity), false, "String.prototype.contains");
+    assertEq("abc".contains("ab", NaN), true, "String.prototype.contains");
+    assertEq("abc".contains("cd", NaN), false, "String.prototype.contains");
+    var myobj = {toString : function () {return "abc";}, contains : String.prototype.contains};
+    assertEq(myobj.contains("abc"), true, "String.prototype.contains");
+    assertEq(myobj.contains("cd"), false, "String.prototype.contains");
+    var gotStr = false, gotPos = false;
+    myobj = {toString : (function () {
+        assertEq(gotPos, false, "String.prototype.contains");
+        gotStr = true;
+        return "xyz";
+      }),
+      contains : String.prototype.contains};
+    var idx = {valueOf : (function () {
+    assertEq(gotStr, true, "String.prototype.contains");
+    gotPos = true;
+    return 42;
+    })};
+    myobj.contains("elephant", idx, "String.prototype.contains");
+    assertEq(gotPos, true, "String.prototype.contains");
+    assertEq("xyzzy".contains("zy\0", 2), false, "String.prototype.contains");
+    var dots = Array(10000).join('.');
+    assertEq(dots.contains("\x01", 10000), false, "String.prototype.contains");
+    assertEq(dots.contains("\0", 10000), false, "String.prototype.contains");
+  } catch (e) {
+    console.log(e.message);
+  }
+}
+
 var methods = [["Map", testMap],
                ["Set",],
                ["String.fromCodePoint",],
@@ -26,7 +79,7 @@ var methods = [["Map", testMap],
                ["String.prototype.repeat",],
                ["String.prototype.startsWith",],
                ["String.prototype.endsWith",],
-               ["String.prototype.contains",],
+               ["String.prototype.contains", testStringPrototypeContains],
                ["Number.parseInt",],
                ["Number.parseFloat",],
                ["Number.isNaN",],
