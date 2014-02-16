@@ -11,10 +11,21 @@ function testMap() {
   // TODO: Add complete tests for Map
   try {
     Map.length ? assertEq(Map.length, 0, "Map.length") : raiseImplError("Map");
-    var m = new Map([1, 'a']);
-    m.size ? assertEq(m.size, 1, "Map.prototype.size") : raiseImplError("Map.prototype.size");
+    var m = new Map([[1, 'a'], [2, 'b']]);
+    m.size ? assertEq(m.size, 2, "Map.prototype.size") : raiseImplError("Map.prototype.size");
   } catch (e) {
-    console.log(e.message);
+    console.error(e.message);
+  }
+}
+
+function testSet() {
+  // TODO: Add complete tests for Set
+  try {
+    Set.length ? assertEq(Set.length, 0, "Set.length") : raiseImplError("Set");
+    var s = new Set([1, 'a']);
+    s.size ? assertEq(s.size, 2, "Set.prototype.size") : raiseImplError("Set.prototype.size");
+  } catch (e) {
+    console.error(e.message);
   }
 }
 
@@ -67,12 +78,12 @@ function testStringPrototypeContains() {
     assertEq(dots.contains("\x01", 10000), false, "String.prototype.contains");
     assertEq(dots.contains("\0", 10000), false, "String.prototype.contains");
   } catch (e) {
-    console.log(e.message);
+    console.error(e.message);
   }
 }
 
 var methods = [["Map", testMap],
-               ["Set",],
+               ["Set", testSet],
                ["String.fromCodePoint",],
                ["String.raw",],
                ["String.prototype.codePointAt",],
