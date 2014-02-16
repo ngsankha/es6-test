@@ -223,12 +223,13 @@ function testStringPrototypeContains() {
 }
 
 function testArrayPrototypeEntries() {
-  /* TODO: Add complete tests for Array.prototype.entries */
   try {
     var arr = [1, 2];
     var it = arr.entries();
     assertEq(it.next(), {value: [0, 1], done: false}, methods[20][0]);
     assertEq(it.next(), {value: [1, 2], done: false}, methods[20][0]);
+    arr.push('a');
+    assertEq(it.next(), {value: [2, 'a'], done: false}, methods[20][0]);
     assertEq(it.next(), {value: undefined, done: true}, methods[20][0]);
   } catch (e) {
     console.error(e.message);
