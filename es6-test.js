@@ -1,4 +1,24 @@
-var methods = [["Map",],
+function assertEq(a, b, cx) {
+  if (a !== b)
+    throw Error("Assertion failed in " + cx + " : " + a + " === " + b);
+}
+
+function raiseImplError(obj) {
+  throw new Error("Invalid implementation: " + obj);
+}
+
+function testMap() {
+  // TODO: Add complete tests for Map
+  try {
+    Map.length ? assertEq(Map.length, 0, "Map.length") : raiseImplError("Map");
+    var m = new Map([1, 'a']);
+    m.size ? assertEq(m.size, 1, "Map.prototype.size") : raiseImplError("Map.prototype.size");
+  } catch (e) {
+    console.log(e.message);
+  }
+}
+
+var methods = [["Map", testMap],
                ["Set",],
                ["String.fromCodePoint",],
                ["String.raw",],
@@ -51,7 +71,8 @@ for (var i = 0; i < methods.length; i++) {
   if (!tmpContext[func]) {
     notExists++;
     notExistsNames.push(methods[i][0]);
-  }
+  } else if (methods[i][1])
+    methods[i][1]();
 }
 
 console.log(notExists + " out of " + methods.length + " methods are not supported.");
