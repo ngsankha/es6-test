@@ -75,7 +75,7 @@ function raiseImplError(obj) {
 }
 
 function testMap() {
-  // TODO: Add complete tests for Map
+  /* TODO: Add complete tests for Map */
   try {
     Map.length ? assertEq(Map.length, 0, "Map.length") : raiseImplError("Map");
     var m = new Map([[1, 'a'], [2, 'b']]);
@@ -86,7 +86,7 @@ function testMap() {
 }
 
 function testSet() {
-  // TODO: Add complete tests for Set
+  /* TODO: Add complete tests for Set */
   try {
     Set.length ? assertEq(Set.length, 0, "Set.length") : raiseImplError("Set");
     var s = new Set([1, 'a']);
@@ -149,6 +149,19 @@ function testStringPrototypeContains() {
   }
 }
 
+function testArrayPrototypeEntries() {
+  /* TODO: Add complete tests for Array.prototype.entries */
+  try {
+    var arr = [1, 2];
+    var it = arr.entries();
+    assertEq(it.next(), {value: [0, 1], done: false}, "Array.prototype.entries");
+    assertEq(it.next(), {value: [1, 2], done: false}, "Array.prototype.entries");
+    assertEq(it.next(), {value: undefined, done: true}, "Array.prototype.entries");
+  } catch (e) {
+    console.error(e.message);
+  }
+}
+
 var methods = [["Map", testMap],
                ["Set", testSet],
                ["String.fromCodePoint",],
@@ -169,7 +182,7 @@ var methods = [["Map", testMap],
                ["Array.prototype.find",],
                ["Array.prototype.findIndex",],
                ["Array.prototype.keys",],
-               ["Array.prototype.entries",],
+               ["Array.prototype.entries", testArrayPrototypeEntries],
                ["Array.prototype.values",],
                ["Object.is",],
                ["Object.assign",],
