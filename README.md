@@ -6,7 +6,7 @@ The idea behind this is to prevent errors due to conflicting implementation betw
 
 ## To Use
 
-Create a bookmark with the following JavaScript code:
+Create a bookmarklet with the following JavaScript code:
 
 ```javascript
 javascript:(function () {
@@ -17,6 +17,4 @@ javascript:(function () {
 })();
 ```
 
-Or just drag [this](javascript:(function(\){var newScript=document.createElement('script'\);newScript.type='text/javascript';newScript.src='https://raw2.github.com/sankha93/es6-test/master/es6-test.js';document.getElementsByTagName('body'\)[0].appendChild(newScript\);}\)(\);) link onto your bookmarks bar.
-
-Just click on the bookmark with the Webconsole open. You will see the results coming up!
+Just click on the bookmarklet with the Webconsole open. You will see the results coming up!
