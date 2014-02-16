@@ -123,11 +123,47 @@ function testMap() {
 }
 
 function testSet() {
-  /* TODO: Add complete tests for Set */
   try {
     var s = new Set([1, 'a']);
     s.size ? assertEq(s.size, 2, "Set.prototype.size") : raiseImplError("Set.prototype.size");
-    s.has ? assertEq(s.has(1), true, "Set.prototype.has()") : raiseImplError("Map.prototype.has()");
+    s.has ? assertEq(s.has(1), true, "Set.prototype.has()") : raiseImplError("Set.prototype.has()");
+    s.add ? s.add(false) : raiseImplError("Set.prototype.add()");
+    if (s.delete) {
+      s.delete('a');
+      assertEq(s.has('a'), false, "Set.prototype.delete()");
+    } else
+      raiseImplError("Set.prototype.delete()");
+
+    var it;
+    if (s.entries) {
+      it = s.entries();
+      assertEq(it.next(), {value: [1, 1], done: false}, "Set.prototype.entries()");
+      assertEq(it.next(), {value: [false, false], done: false}, "Set.prototype.entries()");
+      assertEq(it.next(), {value: undefined, done: true}, "Set.prototype.entries()");
+    } else
+      raiseImplError("Set.prototype.entries()");
+
+    if (s.keys) {
+      it = s.keys();
+      assertEq(it.next(), {value: 1, done: false}, "Set.prototype.keys()");
+      assertEq(it.next(), {value: false, done: false}, "Set.prototype.keys()");
+      assertEq(it.next(), {value: undefined, done: true}, "Set.prototype.keys()");
+    } else
+      raiseImplError("Set.prototype.keys()");
+
+    if (s.values) {
+      it = s.values();
+      assertEq(it.next(), {value: 1, done: false}, "Set.prototype.values()");
+      assertEq(it.next(), {value: false, done: false}, "Set.prototype.values()");
+      assertEq(it.next(), {value: undefined, done: true}, "Set.prototype.values()");
+    } else
+      raiseImplError("Set.prototype.values()");
+
+    if (s.clear) {
+      s.clear();
+      assertEq(s.has(1), false, "Set.prototype.clear()");
+    } else
+    raiseImplError("Set.prototype.clear()")
   } catch (e) {
     console.error(e.message);
   }
