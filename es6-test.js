@@ -75,11 +75,48 @@ function raiseImplError(obj) {
 }
 
 function testMap() {
-  /* TODO: Add complete tests for Map */
   try {
-    Map.length ? assertEq(Map.length, 0, "Map.length") : raiseImplError("Map");
     var m = new Map([[1, 'a'], [2, 'b']]);
     m.size ? assertEq(m.size, 2, "Map.prototype.size") : raiseImplError("Map.prototype.size");
+    m.get ? assertEq(m.get(1), 'a', "Map.prototype.get()") : raiseImplError("Map.prototype.get()");
+    m.has ? assertEq(m.has(1), true, "Map.prototype.has()") : raiseImplError("Map.prototype.has()");
+    m.set ? m.set(3, 'c') : raiseImplError("Map.prototype.set()");
+    if (m.delete) {
+      m.delete(2);
+      assertEq(m.has(2), false, "Map.prototype.delete()");
+    } else
+      raiseImplError("Map.prototype.delete()");
+
+    var it;
+    if (m.entries) {
+      it = m.entries();
+      assertEq(it.next(), {value: [1, 'a'], done: false}, "Map.prototype.entries()");
+      assertEq(it.next(), {value: [3, 'c'], done: false}, "Map.prototype.entries()");
+      assertEq(it.next(), {value: undefined, done: true}, "Map.prototype.entries()");
+    } else
+      raiseImplError("Map.prototype.entries()");
+
+    if (m.keys) {
+      it = m.keys();
+      assertEq(it.next(), {value: 1, done: false}, "Map.prototype.keys()");
+      assertEq(it.next(), {value: 3, done: false}, "Map.prototype.keys()");
+      assertEq(it.next(), {value: undefined, done: true}, "Map.prototype.keys()");
+    } else
+      raiseImplError("Map.prototype.keys()");
+
+    if (m.values) {
+      it = m.values();
+      assertEq(it.next(), {value: 'a', done: false}, "Map.prototype.values()");
+      assertEq(it.next(), {value: 'c', done: false}, "Map.prototype.values()");
+      assertEq(it.next(), {value: undefined, done: true}, "Map.prototype.values()");
+    } else
+      raiseImplError("Map.prototype.values()");
+
+    if (m.clear) {
+      m.clear();
+      assertEq(m.has(1), false, "Map.prototype.clear()");
+    } else
+    raiseImplError("Map.prototype.clear()")
   } catch (e) {
     console.error(e.message);
   }
@@ -88,9 +125,9 @@ function testMap() {
 function testSet() {
   /* TODO: Add complete tests for Set */
   try {
-    Set.length ? assertEq(Set.length, 0, "Set.length") : raiseImplError("Set");
     var s = new Set([1, 'a']);
     s.size ? assertEq(s.size, 2, "Set.prototype.size") : raiseImplError("Set.prototype.size");
+    s.has ? assertEq(s.has(1), true, "Set.prototype.has()") : raiseImplError("Map.prototype.has()");
   } catch (e) {
     console.error(e.message);
   }
@@ -98,52 +135,52 @@ function testSet() {
 
 function testStringPrototypeContains() {
   try {
-    assertEq("abc".contains("a"), true, "String.prototype.contains");
-    assertEq("abc".contains("b"), true, "String.prototype.contains");
-    assertEq("abc".contains("abc"), true, "String.prototype.contains");
-    assertEq("abc".contains("bc"), true, "String.prototype.contains");
-    assertEq("abc".contains("d"), false, "String.prototype.contains");
-    assertEq("abc".contains("abcd"), false, "String.prototype.contains");
-    assertEq("abc".contains("ac"), false, "String.prototype.contains");
-    assertEq("abc".contains("abc", 0), true, "String.prototype.contains");
-    assertEq("abc".contains("bc", 0), true, "String.prototype.contains");
-    assertEq("abc".contains("de", 0), false, "String.prototype.contains");
-    assertEq("abc".contains("bc", 1), true, "String.prototype.contains");
-    assertEq("abc".contains("c", 1), true, "String.prototype.contains");
-    assertEq("abc".contains("a", 1), false, "String.prototype.contains");
-    assertEq("abc".contains("abc", 1), false, "String.prototype.contains");
-    assertEq("abc".contains("c", 2), true, "String.prototype.contains");
-    assertEq("abc".contains("d", 2), false, "String.prototype.contains");
-    assertEq("abc".contains("dcd", 2), false, "String.prototype.contains");
-    assertEq("abc".contains("a", 42), false, "String.prototype.contains");
-    assertEq("abc".contains("a", Infinity), false, "String.prototype.contains");
-    assertEq("abc".contains("ab", -43), true, "String.prototype.contains");
-    assertEq("abc".contains("cd", -42), false, "String.prototype.contains");
-    assertEq("abc".contains("ab", -Infinity), true, "String.prototype.contains");
-    assertEq("abc".contains("cd", -Infinity), false, "String.prototype.contains");
-    assertEq("abc".contains("ab", NaN), true, "String.prototype.contains");
-    assertEq("abc".contains("cd", NaN), false, "String.prototype.contains");
+    assertEq("abc".contains("a"), true, methods[8][0]);
+    assertEq("abc".contains("b"), true, methods[8][0]);
+    assertEq("abc".contains("abc"), true, methods[8][0]);
+    assertEq("abc".contains("bc"), true, methods[8][0]);
+    assertEq("abc".contains("d"), false, methods[8][0]);
+    assertEq("abc".contains("abcd"), false, methods[8][0]);
+    assertEq("abc".contains("ac"), false, methods[8][0]);
+    assertEq("abc".contains("abc", 0), true, methods[8][0]);
+    assertEq("abc".contains("bc", 0), true, methods[8][0]);
+    assertEq("abc".contains("de", 0), false, methods[8][0]);
+    assertEq("abc".contains("bc", 1), true, methods[8][0]);
+    assertEq("abc".contains("c", 1), true, methods[8][0]);
+    assertEq("abc".contains("a", 1), false, methods[8][0]);
+    assertEq("abc".contains("abc", 1), false, methods[8][0]);
+    assertEq("abc".contains("c", 2), true, methods[8][0]);
+    assertEq("abc".contains("d", 2), false, methods[8][0]);
+    assertEq("abc".contains("dcd", 2), false, methods[8][0]);
+    assertEq("abc".contains("a", 42), false, methods[8][0]);
+    assertEq("abc".contains("a", Infinity), false, methods[8][0]);
+    assertEq("abc".contains("ab", -43), true, methods[8][0]);
+    assertEq("abc".contains("cd", -42), false, methods[8][0]);
+    assertEq("abc".contains("ab", -Infinity), true, methods[8][0]);
+    assertEq("abc".contains("cd", -Infinity), false, methods[8][0]);
+    assertEq("abc".contains("ab", NaN), true, methods[8][0]);
+    assertEq("abc".contains("cd", NaN), false, methods[8][0]);
     var myobj = {toString : function () {return "abc";}, contains : String.prototype.contains};
-    assertEq(myobj.contains("abc"), true, "String.prototype.contains");
-    assertEq(myobj.contains("cd"), false, "String.prototype.contains");
+    assertEq(myobj.contains("abc"), true, methods[8][0]);
+    assertEq(myobj.contains("cd"), false, methods[8][0]);
     var gotStr = false, gotPos = false;
     myobj = {toString : (function () {
-        assertEq(gotPos, false, "String.prototype.contains");
+        assertEq(gotPos, false, methods[8][0]);
         gotStr = true;
         return "xyz";
       }),
       contains : String.prototype.contains};
     var idx = {valueOf : (function () {
-    assertEq(gotStr, true, "String.prototype.contains");
+    assertEq(gotStr, true, methods[8][0]);
     gotPos = true;
     return 42;
     })};
-    myobj.contains("elephant", idx, "String.prototype.contains");
-    assertEq(gotPos, true, "String.prototype.contains");
-    assertEq("xyzzy".contains("zy\0", 2), false, "String.prototype.contains");
+    myobj.contains("elephant", idx, methods[8][0]);
+    assertEq(gotPos, true, methods[8][0]);
+    assertEq("xyzzy".contains("zy\0", 2), false, methods[8][0]);
     var dots = Array(10000).join('.');
-    assertEq(dots.contains("\x01", 10000), false, "String.prototype.contains");
-    assertEq(dots.contains("\0", 10000), false, "String.prototype.contains");
+    assertEq(dots.contains("\x01", 10000), false, methods[8][0]);
+    assertEq(dots.contains("\0", 10000), false, methods[8][0]);
   } catch (e) {
     console.error(e.message);
   }
@@ -154,9 +191,9 @@ function testArrayPrototypeEntries() {
   try {
     var arr = [1, 2];
     var it = arr.entries();
-    assertEq(it.next(), {value: [0, 1], done: false}, "Array.prototype.entries");
-    assertEq(it.next(), {value: [1, 2], done: false}, "Array.prototype.entries");
-    assertEq(it.next(), {value: undefined, done: true}, "Array.prototype.entries");
+    assertEq(it.next(), {value: [0, 1], done: false}, methods[20][0]);
+    assertEq(it.next(), {value: [1, 2], done: false}, methods[20][0]);
+    assertEq(it.next(), {value: undefined, done: true}, methods[20][0]);
   } catch (e) {
     console.error(e.message);
   }
